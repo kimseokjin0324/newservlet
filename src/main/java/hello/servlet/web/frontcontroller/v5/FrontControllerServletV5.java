@@ -6,7 +6,11 @@ import hello.servlet.web.frontcontroller.v3.ControllerV3;
 import hello.servlet.web.frontcontroller.v3.controller.MemberFormControllerV3;
 import hello.servlet.web.frontcontroller.v3.controller.MemberListControllerV3;
 import hello.servlet.web.frontcontroller.v3.controller.MemberSaveControllerV3;
+import hello.servlet.web.frontcontroller.v4.controller.MemberFormControllerV4;
+import hello.servlet.web.frontcontroller.v4.controller.MemberListControllerV4;
+import hello.servlet.web.frontcontroller.v4.controller.MemberSaveControllerV4;
 import hello.servlet.web.frontcontroller.v5.adpater.ControllerV3HandlerAdapter;
+import hello.servlet.web.frontcontroller.v5.adpater.ControllerV4HandlerAdapter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,14 +35,21 @@ public class FrontControllerServletV5 extends HttpServlet {
         initHandlerAdapters();
     }
 
-    private boolean initHandlerAdapters() {
-        return handlerAdapters.add(new ControllerV3HandlerAdapter());
-    }
-
     private void initHandlerMappingMap() {
         handlerMappingMap.put("/front-controller/v5/v3/members/new-form", new MemberFormControllerV3());
         handlerMappingMap.put("/front-controller/v5/v3/members/save", new MemberSaveControllerV3());
         handlerMappingMap.put("/front-controller/v5/v3/members", new MemberListControllerV3());
+
+        //V4를 추가
+        handlerMappingMap.put("/front-controller/v5/v4/members/new-form", new MemberFormControllerV4());
+        handlerMappingMap.put("/front-controller/v5/v4/members/save", new MemberSaveControllerV4());
+        handlerMappingMap.put("/front-controller/v5/v4/members", new MemberListControllerV4());
+    }
+    private void initHandlerAdapters() {
+        handlerAdapters.add(new ControllerV3HandlerAdapter());
+        //V4를 추가
+        handlerAdapters.add(new ControllerV4HandlerAdapter());
+        //V3에서 V4를 확장하는데는 frontcontroller로직에는 큰변동이 없엇음 -> Adapter만 추가를 했음 OCP를 지킬수있음
     }
 
     @Override
